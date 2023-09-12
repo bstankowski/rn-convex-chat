@@ -3,9 +3,15 @@ import { mutation, query } from "./_generated/server";
 import { insertEmojis } from "../lib/emojis";
 
 export const listMessages = query({
-    args: {},
-    handler: async (ctx) => {
-        const messages = await ctx.db.query("messages").order("asc").take(100);
+    args: {
+        chatId: v.id("chats"),
+    },
+    handler: async (ctx, { chatId }) => {
+        const messages = await ctx.db
+            .query("messages")
+            .withIndex("byChatId", (q) => q.eq("chatId", chatId))
+            .order("asc")
+            .collect();
 
         // Find likes for each message and add them to the returned object
         const withLikes = await Promise.all(
@@ -28,9 +34,11 @@ export const listMessages = query({
 
 export const sendMessage = mutation({
     args: {
-        body: v.string(),
         author: v.string(),
+        body: v.string(),
+        chatId: v.id("chats"),
     },
+
     handler: async (ctx, message) => {
         await ctx.db.insert("messages", {
             ...message,
@@ -50,10 +58,10 @@ export const deleteMessage = mutation({
 
 export const likeMessage = mutation({
     args: {
-        user: v.string(),
         messageId: v.id("messages"),
+        user: v.string(),
     },
-    handler: async (ctx, { user, messageId }) => {
-        await ctx.db.insert("likes", { user, messageId });
+    handler: async (ctx, { messageId, user }) => {
+        await ctx.db.insert("likes", { messageId, user });
     },
 });

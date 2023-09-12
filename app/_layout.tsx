@@ -1,13 +1,12 @@
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { GluestackUIProvider, HStack, Text, config } from "@gluestack-ui/themed";
-import Chat from "./components/Chat/Chat";
-import AuthProvider from "./components/Auth/AuthContext";
+import { GluestackUIProvider, config } from "@gluestack-ui/themed";
 import { CONVEX_URL } from "@env";
-import Header from "./components/Header";
+import AuthProvider from "./(app)/(auth)/AuthContext";
+import { Slot } from "expo-router";
 
-export default function App() {
+const RootLayout = () => {
     const convex = new ConvexReactClient(CONVEX_URL, {
         // We need to disable this to be compatible with React Native
         unsavedChangesWarning: false,
@@ -20,14 +19,15 @@ export default function App() {
 
                 <SafeAreaView style={styles.container}>
                     <AuthProvider>
-                        <Header />
-                        <Chat />
+                        <Slot />
                     </AuthProvider>
                 </SafeAreaView>
             </GluestackUIProvider>
         </ConvexProvider>
     );
-}
+};
+
+export default RootLayout;
 
 const styles = StyleSheet.create({
     container: {

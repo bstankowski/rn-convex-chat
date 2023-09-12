@@ -1,11 +1,16 @@
 import { Center, ScrollView } from "@gluestack-ui/themed";
 import { ActivityIndicator, StyleSheet } from "react-native";
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import Message from "./Message";
+import { Id } from "../../../../convex/_generated/dataModel";
 
-const Messages = () => {
-    const messages = useQuery(api.messages.listMessages);
+interface MessagesProps {
+    chatId: Id<"chats">;
+}
+
+const MessagesList = ({ chatId }: MessagesProps) => {
+    const messages = useQuery(api.messages.listMessages, { chatId });
 
     return (
         <>
@@ -24,7 +29,7 @@ const Messages = () => {
     );
 };
 
-export default Messages;
+export default MessagesList;
 
 const styles = StyleSheet.create({
     container: {

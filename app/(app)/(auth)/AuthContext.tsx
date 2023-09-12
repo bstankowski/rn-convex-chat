@@ -1,9 +1,10 @@
 /**
  * Not really 'auth', just a way to get the user's name for the chat.
+ * TODO: try Convex auth and expo-secure-store instead of asyncStorage
  */
 
 import { createContext, useContext, useEffect, useState } from "react";
-import * as asyncStorage from "../../lib/asyncStorage";
+import * as asyncStorage from "../../../lib/asyncStorage";
 import { Auth, User } from "./types";
 
 const AuthContext = createContext<Auth>({

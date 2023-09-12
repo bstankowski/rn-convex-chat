@@ -1,6 +1,6 @@
 import { Box, HStack, Pressable, Text, TrashIcon, FavouriteIcon } from "@gluestack-ui/themed";
-import { Message } from "./types";
-import useMessage from "./hooks/useMessage";
+import { Message } from "../types";
+import useMessage from "../hooks/useMessage";
 
 interface MessageComponentProps {
     message: Message;

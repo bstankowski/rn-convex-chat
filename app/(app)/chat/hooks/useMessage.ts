@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
-import { useAuth } from "../../Auth/AuthContext";
-import { api } from "../../../convex/_generated/api";
+import { useAuth } from "../../(auth)/AuthContext";
+import { api } from "../../../../convex/_generated/api";
 import { Message } from "../types";
 
 export default function useMessage(message: Message) {
@@ -13,9 +13,9 @@ export default function useMessage(message: Message) {
     const isLiked = !!message.likes?.find((l) => l.user === user);
 
     return {
-        isOwned: message.author === user,
         deleteMessage: () => deleteMessage({ id: message._id }),
-        likeMessage: () => likeMessage({ messageId: message._id, user: user as string }),
         isLiked,
+        isOwned: message.author === user,
+        likeMessage: () => likeMessage({ messageId: message._id, user: user as string }),
     };
 }
